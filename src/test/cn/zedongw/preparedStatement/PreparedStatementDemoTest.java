@@ -38,4 +38,9 @@ public class PreparedStatementDemoTest {
     public void delete() {
         preparedStatementDemo.delete();
     }
+
+    @Test
+    public void batch() {
+        preparedStatementDemo.batch();
+    }
 }

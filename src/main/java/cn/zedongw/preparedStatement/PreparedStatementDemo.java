@@ -1,6 +1,12 @@
 package cn.zedongw.preparedStatement;
 
-import java.sql.*;
+import cn.zedongw.entity.Students;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * @Author ZeDongW
@@ -66,6 +72,31 @@ public class PreparedStatementDemo {
             stmt.setInt(1,2);
             int count = stmt.executeUpdate();
             System.out.println("影响了" + count + "行");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void batch(){
+        ArrayList<Students> list = new ArrayList<Students>();
+        list.add(new Students("张三",24));
+        list.add(new Students("张三1",24));
+        list.add(new Students("张三2",24));
+        list.add(new Students("张三3",24));
+        list.add(new Students("张三4",24));
+
+        String sql = "insert into students (name,age) values (?,?)";
+
+        try {
+            stmt = conn.prepareStatement(sql);
+            for (Students s : list) {
+                stmt.setString(1, s.getName());
+                stmt.setInt(2, s.getAge());
+                stmt.addBatch();
+            }
+            stmt.executeBatch();
+            stmt.clearBatch();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
