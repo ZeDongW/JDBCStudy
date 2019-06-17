@@ -2,10 +2,7 @@ package cn.zedongw.preparedStatement;
 
 import cn.zedongw.entity.Students;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 /**
@@ -25,11 +22,15 @@ public class PreparedStatementDemo {
     public void add(){
         try {
             String sql = "insert into students (name,age) values (?,?)";
-            stmt = conn.prepareStatement(sql);
+            stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1,"张三");
             stmt.setInt(2,23);
             int count = stmt.executeUpdate();
             System.out.println("影响了" + count + "行");
+            resul = stmt.getGeneratedKeys();
+            while (resul.next()){
+                System.out.println("自增长列序号为：" + resul.getInt(1));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -89,7 +90,7 @@ public class PreparedStatementDemo {
         String sql = "insert into students (name,age) values (?,?)";
 
         try {
-            stmt = conn.prepareStatement(sql);
+            stmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             for (Students s : list) {
                 stmt.setString(1, s.getName());
                 stmt.setInt(2, s.getAge());
@@ -97,6 +98,10 @@ public class PreparedStatementDemo {
             }
             stmt.executeBatch();
             stmt.clearBatch();
+            resul = stmt.getGeneratedKeys();
+            while (resul.next()){
+                System.out.println("自增长列序号为：" + resul.getInt(1));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
