@@ -40,6 +40,4 @@ public class MyBaseDao {
             JDBCUtil.dbClose(conn, pstmt, rs);
         }
     }
-
-
 }
