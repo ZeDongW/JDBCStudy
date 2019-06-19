@@ -4,14 +4,27 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-  
+  <context-param>
+    <param-name>javax.faces.CONFIG_FILES</param-name>
+    <param-value>/c3p0-config.xml</param-value>
+  </context-param>
+
   <servlet>
     <servlet-name>PathTest</servlet-name>
     <servlet-class>cn.zedongw.servlet.PathTest</servlet-class>
   </servlet>
-  
+  <servlet>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>PathTest</servlet-name>
     <url-pattern>/path</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
 </web-app>
